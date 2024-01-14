@@ -7,7 +7,7 @@ V0.1 - Four textfields to enter score
 V0.2 - Clean up look
 
 Coming:
-V0.3 - Option to choose number of players at start of game
+V0.3 - Option to choose number of players at start of game <br>
 V0.4 - Name your players
 V1.0 - Calculator at bottom to add each round to running score
 V1.1 - Tabs at bottom for Game / Exit
