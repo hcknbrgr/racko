@@ -3,6 +3,7 @@
 My first Flutter project.  This will be a score card for Rack-o, a family card game that involves sorting 10 cards on a rack from a stock pile of cards in a fun turn-based game.
 
 V0.1 - Four textfields to enter score
+
 V0.2 - Clean up look
 
 Coming:
