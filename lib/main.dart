@@ -1,9 +1,348 @@
 import 'package:flutter/material.dart';
+/*
+//Learned Dart to do a test run of functionality
 
-void main() {
-  runApp(const MyApp());
+class Player {
+//Private Properties
+  String name = "";
+  int totalScore=0;
+  List<int> scores = [];
+//Constructor
+  Player(this.name);
+
+//Getters
+  int get score => totalScore;
+  List<int> get scoreList => scores;
+  String get playerName => name;
+  
+//Methods
+  void addScore(int points)
+  {
+    totalScore += points;
+    scores.add(points);
+  }
+
 }
 
+
+class Game{
+//Private Variables
+  List<Player> players = [];
+  int dealer = 0;
+  int roundNumber=0;
+  int playerTurn=1;
+  int scoresEnteredThisRound=0;
+  List<int> playerScores = [];
+  final int winningScore = 500;
+  bool gameOver= false;
+
+//Constructors
+  Game();
+
+//Getters
+  Player playerInPosition(int position) => players[position];
+  int get numPlayers => players.length;
+
+//Methods
+  void addPlayer(String name){
+    if (players.length<4){
+      players.add(Player(name));
+    }
+    else {
+      //print("Too many players");
+    }
+  }
+
+  void updateScore(int amount){
+    players[playerTurn].addScore(amount);
+    //print("Player ${players[playerTurn].name}'s score updated with $amount");
+    playerTurn = (playerTurn+1)%players.length;
+    scoresEnteredThisRound +=1;
+    if (scoresEnteredThisRound == players.length)
+    {
+      //print("Round is done, all scores entered");
+      for (final player in players){
+        if(player.score>winningScore)
+        {
+          //print("Game Over, we have a winner!");
+          gameOver=true;
+        }
+      }
+      if(gameOver)
+      {
+        for (final player in players){
+          //print("${player.playerName}'s score: ${player.score.toString()}");
+        }
+      }
+      else{
+        dealer = (dealer+1)%players.length;
+        //print("Dealer for next round is: ${players[dealer].name}");
+        playerTurn = (dealer+1)%players.length;
+        scoresEnteredThisRound=0;
+      }
+
+    }
+    if (!gameOver){
+      //print("It is now ${players[playerTurn].name}'s turn");
+    }
+    
+  }
+
+  void printPlayers(){
+    for (final player in players){
+      //print(player.name + player.score.toString());
+    }
+  }
+
+}
+
+
+*/
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const String appTitle = 'Racko Score Notepad';
+    return MaterialApp(
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text(appTitle),
+        ),
+        // #docregion addWidget
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              ImageSection(
+                image: 'images/racko.png',
+              ),
+              ScoreSection(),
+            ],
+          ),
+        ),
+        // #enddocregion addWidget
+      ),
+    );
+  }
+}
+
+class ScoreSection extends StatelessWidget {
+  const ScoreSection({super.key});
+  final lblP1 = "Player 1";
+  final lblP2 = "Player 2";
+  final lblP3 = "Player 3";
+  final lblP4 = "Player 4";
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        TextField(
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: lblP1,
+          ),
+          keyboardType: TextInputType.number
+        ),
+        TextField(
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: lblP2,
+          ),
+          keyboardType: TextInputType.number
+        ),
+        TextField(
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: lblP3,
+          ),
+          keyboardType: TextInputType.number
+        ),
+        TextField(
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: lblP4,
+          ),
+          keyboardType: TextInputType.number
+        ),
+      ],
+    );
+  }
+}
+
+
+class ButtonSection extends StatelessWidget {
+  const ButtonSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = Theme.of(context).primaryColor;
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ButtonWithText(
+            color: color,
+            icon: Icons.call,
+            label: 'CALL',
+          ),
+          ButtonWithText(
+            color: color,
+            icon: Icons.near_me,
+            label: 'ROUTE',
+          ),
+          ButtonWithText(
+            color: color,
+            icon: Icons.share,
+            label: 'SHARE',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonWithText extends StatelessWidget {
+  const ButtonWithText({
+    super.key,
+    required this.color,
+    required this.icon,
+    required this.label,
+  });
+
+  final Color color;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class TextSection extends StatelessWidget {
+  const TextSection({
+    super.key,
+    required this.description,
+  });
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Text(
+        description,
+        softWrap: true,
+      ),
+    );
+  }
+}
+
+// #docregion ImageSection
+class ImageSection extends StatelessWidget {
+  const ImageSection({super.key, required this.image});
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    // #docregion Image-asset
+    return Image.asset(
+      image,
+      width: 572,
+      height: 172,
+      fit: BoxFit.fill,
+    );
+    // #enddocregion Image-asset
+  }
+}
+// #enddocregion ImageSection
+
+// #docregion FavoriteWidget
+class FavoriteWidget extends StatefulWidget {
+  const FavoriteWidget({super.key});
+
+  @override
+  State<FavoriteWidget> createState() => _FavoriteWidgetState();
+}
+// #enddocregion FavoriteWidget
+
+// #docregion _FavoriteWidgetState, _FavoriteWidgetState-fields, _FavoriteWidgetState-build
+class _FavoriteWidgetState extends State<FavoriteWidget> {
+  // #enddocregion _FavoriteWidgetState-build
+  bool _isFavorited = true;
+  int _favoriteCount = 41;
+
+  // #enddocregion _FavoriteWidgetState-fields
+
+  // #docregion _toggleFavorite
+  void _toggleFavorite() {
+    setState(() {
+      if (_isFavorited) {
+        _favoriteCount -= 1;
+        _isFavorited = false;
+      } else {
+        _favoriteCount += 1;
+        _isFavorited = true;
+      }
+    });
+  }
+
+  // #enddocregion _toggleFavorite
+
+  // #docregion _FavoriteWidgetState-build
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(0),
+          child: IconButton(
+            padding: const EdgeInsets.all(0),
+            alignment: Alignment.centerRight,
+            icon: (_isFavorited
+                ? const Icon(Icons.star)
+                : const Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: _toggleFavorite,
+          ),
+        ),
+        SizedBox(
+          width: 18,
+          child: SizedBox(
+            child: Text('$_favoriteCount'),
+          ),
+        ),
+      ],
+    );
+  }
+// #docregion _FavoriteWidgetState-fields
+}
+/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -11,27 +350,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Rack-o!',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Rack-O Score Card Home Page'),
     );
   }
 }
@@ -81,7 +405,8 @@ class _MyHomePageState extends State<MyHomePage> {
         // TRY THIS: Try changing the color here to a specific color (to
         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
         // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.red,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -123,3 +448,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/
